@@ -34,10 +34,8 @@ import LikesButton from "./LikesButton";
 import Profile from "./Profile";
 import Likes from "./Likes";
 import Search from "./Search";
+import ShowCamera from "./ShowCamera"
 
-function secondsToTime(time) {
-    return ~~(time / 60) + ":" + (time % 60 < 10 ? "0" : "") + (time % 60);
-}
 
 class Sampleedit extends React.Component {
 
@@ -49,6 +47,7 @@ class Sampleedit extends React.Component {
                 isProfileOverlayVisible: false,
                 isLikesOverlayVisible: false,
                 isSearchOverlayVisible: false,
+                isCameraOverlayVisible: false,
                 videoData: [
                     {
                         isPaused: false,
@@ -75,63 +74,49 @@ class Sampleedit extends React.Component {
         this.setState({
             isProfileOverlayVisible: true
         });
+        this.handleVideoPause();
     }
 
     hideProfileOverlay = () => {
         this.setState({
             isProfileOverlayVisible: false
         });
+        this.handleVideoPlay();
     }
 
     showLikesOverlay = () => {
             this.setState({
                 isLikesOverlayVisible: true
             });
+            this.handleVideoPause();
         }
 
     hideLikesOverlay = () => {
         this.setState({
             isLikesOverlayVisible: false
         });
+        this.handleVideoPlay();
     }
 
     showSearchOverlay = () => {
                 this.setState({
                     isSearchOverlayVisible: true
                 });
+                this.handleVideoPause();
             }
 
-        hideSearchOverlay = () => {
+    hideSearchOverlay = () => {
             this.setState({
                 isSearchOverlayVisible: false
             });
+            this.handleVideoPlay();
         }
 
-    showAlert = () => {
-        Alert.alert("Last page");
-    };
+    showCameraOverlay = () => {
+                    this.props.onStartRecording();
+                    this.handleVideoPause();
+                }
 
-    state = { loggedIn: false };
-
-    componentWillMount() {
-        firebase.initializeApp({
-            apiKey: "AIzaSyAJOWqzpRvsQS4V3urptMYWhnv_TtF6LWY",
-            authDomain: "authentication-464cd.firebaseapp.com",
-            databaseURL: "https://authentication-464cd.firebaseio.com",
-            projectId: "authentication-464cd",
-            storageBucket: "authentication-464cd.appspot.com",
-            messagingSenderId: "361342485667",
-            appId: "1:361342485667:web:abe4f46330076ed3"
-        });
-
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                this.setState({ loggedIn: true });
-            } else {
-                this.setState({ loggedIn: false });
-            }
-        });
-    }
 
     handleVideoClick(newIndex) {
         let newin = newIndex;
@@ -142,23 +127,28 @@ class Sampleedit extends React.Component {
             videoData[i].isPaused = i != newin;
         }
         this.setState({ videoData });
-
-        if (newin > 2) {
-            this.showAlert();
         }
-    }
-    refreshScreen = () => {
-        this.setState(
-            {
-                renderContent: false
-            },
-            () => {
-                this.setState({ renderContent: true });
+
+    handleVideoPause()
+    {
+        const videoData = this.state.videoData.slice(0);
+        for (var i = 0; i < this.state.videoData.length; i++) {
+            if (videoData[i].isPaused === false) {
+                videoData[i].isPaused = true;
+                this._previouslyPlayingVideoIndex = i;
             }
-        );
-    };
+        }
+        this.setState({ videoData });
+    }
+
+    handleVideoPlay()
+        {
+            const videoData = this.state.videoData.slice(0);
+            videoData[this._previouslyPlayingVideoIndex].isPaused = false;
+            this.setState({ videoData });
+        }
+
     render() {
-        if (this.state.loggedIn && this.state.renderContent) {
             return (
                 <View style={styles.container}>
                     <View style={{flex: 1}}>
@@ -196,7 +186,7 @@ class Sampleedit extends React.Component {
                                             <Text style={styles.Sounttext}>{"sound track playing..."}</Text>
                                         </View>
                                         <View style={styles.leftalign}>
-                                            <Addprofile onPress={() => firebase.auth().signOut()} />
+                                            <Addprofile />
                                             <LikeButton />
                                             <ThumbsButton />
                                             <Comm />
@@ -208,11 +198,10 @@ class Sampleedit extends React.Component {
                         </Swiper>
                     </View>
                     <View style={styles.footer}>
-                        <TouchableOpacity onPress={this.refreshScreen}>
-                            <HomeButton />
-                        </TouchableOpacity>
+
+                        <HomeButton />
                         <SearchButton onPressHandler={this.showSearchOverlay} />
-                        <Add />
+                        <Add onPressHandler={this.showCameraOverlay} />
                         <LikesButton onPressHandler={this.showLikesOverlay}/>
                         <ProfileButton onPressHandler={this.showProfileOverlay}/>
 
@@ -222,8 +211,6 @@ class Sampleedit extends React.Component {
                     <Likes onBackPress={this.hideLikesOverlay} isVisible={this.state.isLikesOverlayVisible} />
                 </View>
             );
-        }
-        return <LoginForm />;
     }
 }
 

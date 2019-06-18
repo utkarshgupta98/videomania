@@ -8,15 +8,16 @@ import {
     TouchableOpacity
 } from "react-native";
 
+
 export default class Add extends React.Component {
     render() {
         return (
-            <View style={styles.iconRow}>
+            <TouchableOpacity style={styles.iconRow} onPress={this.props.onPressHandler}>
                 <Image
                     source={require("./images/new/add.png")}
                     style={styles.homeIcon}
                 />
-            </View>
+            </TouchableOpacity>
         );
     }
 }

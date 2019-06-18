@@ -21,7 +21,6 @@ export default class Likes extends React.Component {
             transparent={false}
             visible={this.props.isVisible}
             onRequestClose={() => this.props.onBackPress()}
-
         >
             <TouchableOpacity
                 onPress={this.props.onBackPress}

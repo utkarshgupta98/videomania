@@ -80,7 +80,6 @@ export default class Profile extends React.Component {
       >
         <ScrollView>
           <TouchableOpacity
-            style={styles.iconRow}
             onPress={this.props.onBackPress}
           >
             <Image
@@ -181,8 +180,9 @@ const styles = {
   backIcon: {
     width: 20,
     height: 20,
-    top: 20,
-    left: 20
+    top: 0,
+    left: 0,
+    margin: 20
   },
   smalltext: {
     fontSize: 14,

@@ -12,7 +12,7 @@ import Sampleedit from "./Sampleedit";
 export default class Addprofile extends React.Component {
     render() {
         return (
-            <TouchableOpacity onPress={this.props.onPress}>
+            <TouchableOpacity>
                 <Image
                     source={require("./images/new/photo.png")}
                     style={styles.homeIcon}

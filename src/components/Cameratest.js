@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CameraRoll, View, TouchableOpacity, TouchableWithoutFeedback, Text, Alert, ToastAndroid, PermissionsAndroid, Modal, Image, StyleSheet } from 'react-native';
+import { CameraRoll, View, TouchableOpacity, TouchableWithoutFeedback, Text, ToastAndroid, PermissionsAndroid } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { useCamera } from 'react-native-camera-hooks';
 
@@ -7,7 +7,7 @@ const initialState = {
     isRecording: false
 }
 
-const Cameratest = ({ initialProps, onStopRecording}) => {
+const Cameratest = ({ initialProps }) => {
   const [
     { cameraRef, type, ratio, autoFocus, autoFocusPoint, isRecording },
     {
@@ -23,13 +23,30 @@ const Cameratest = ({ initialProps, onStopRecording}) => {
 let videoData;
 
 const recordOptions = {
-  maxDuration: 1,
+  maxDuration: 5,
 };
 
-const recordOptionstwo = {
-  maxDuration: 7,
+onVideoBtnPress = async function() {
+    try {
+        setIsRecording(true);
+        const data = await recordVideo(recordOptions).then(async (data) => {
+            const storagePermGranted = await requestExternalStoragePermission();
+            if (storagePermGranted) {
+                CameraRoll.saveToCameraRoll(data.uri);
+            } else {
+                ToastAndroid.show("Cannot save, perm not granted", ToastAndroid.LONG);
+            }
+        });
+    } catch (error) {
+        console.log('error1: ',error);
+        console.warn(error);
+        ToastAndroid.show(error, ToastAndroid.LONG);
+    } finally {
+        setIsRecording(false);
+    }
 };
 
+/*
     onVideoBtnPress  = async function() {
         try {
                 setIsRecording(true);
@@ -65,8 +82,8 @@ const recordOptionstwo = {
                   }
               };
 
-    onVideoStop  = async function() {
-      const storagePermGranted = await requestExternalStoragePermission();
+    onVideoStop  = () => {
+      const storagePermGranted = requestExternalStoragePermission();
       if (storagePermGranted) {
           CameraRoll.saveToCameraRoll(videoData.uri);
           setIsRecording(false);
@@ -74,8 +91,7 @@ const recordOptionstwo = {
           ToastAndroid.show("Cannot save, perm not granted", ToastAndroid.LONG);
       }
     };
-
-
+*/
     requestExternalStoragePermission = async () => {
         try {
          const granted = await PermissionsAndroid.request(
@@ -93,9 +109,7 @@ const recordOptionstwo = {
         }
     };
 
-
   return (
-
     <View style={{ flex: 1 }}>
       <RNCamera
         ref={cameraRef}
@@ -104,12 +118,12 @@ const recordOptionstwo = {
         style={{ flex: 1 }}
 
       />
-       {isRecording && (
+       {/*isRecording && (
                <TouchableOpacity
                  onPress={onVideoStop}
-                 style={{ width: '100%', height: 65, backgroundColor: '#f00000' }}
+                 style={{ width: '100%', height: 45, backgroundColor: '#f00000' }}
                />
-             )}
+             )*/}
 
       {!isRecording && (
         <TouchableOpacity
@@ -117,24 +131,8 @@ const recordOptionstwo = {
           style={{ width: '100%', height: 45, backgroundColor: 'green' }}
         />
       )}
-        <TouchableOpacity onPress={onStopRecording} style={{ width: "100%", height: 40, backgroundColor: "orange"}}>
-            <View style={{alignItems: "center"}} >
-                <Image
-                    source={require("./images/back.png")}
-                    style={styles.backIcon}
-                />
-            </View>
-        </TouchableOpacity>
-
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-    backIcon: {
-        width: 30,
-        height: 30,
-    }
-})
 
 export default Cameratest;

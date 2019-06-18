@@ -33,7 +33,7 @@ export default class ShareButton extends React.Component {
             title: "React Native",
             message: "Videomania",
             url: "http://facebook.github.io/react-native/",
-            subject: "Share Link" //  for email
+            subject: "Share Link" // for email
         };
 
         return (
@@ -49,101 +49,62 @@ export default class ShareButton extends React.Component {
                     <Text style={styles.countshow}>{"share"}</Text>
                 </TouchableOpacity>
 
-                <ShareSheet
-                    visible={this.state.visible}
-                    onCancel={this.onCancel.bind(this)}
-                >
-                    <Button
-                        iconSrc={{ uri: TWITTER_ICON }}
-                        onPress={() => {
+              <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
+                        <Button iconSrc={{ uri: TWITTER_ICON }}
+                                onPress={()=>{
                             this.onCancel();
                             setTimeout(() => {
-                                Share.shareSingle(
-                                    Object.assign(shareOptions, {
-                                        social: "twitter"
-                                    })
-                                );
-                            }, 300);
-                        }}
-                    >
-                        Twitter
-                    </Button>
-                    <Button
-                        iconSrc={{ uri: FACEBOOK_ICON }}
-                        onPress={() => {
+                              Share.shareSingle(Object.assign(shareOptions, {
+                                "social": "twitter"
+                              }));
+                            },300);
+                          }}>Twitter</Button>
+                        <Button iconSrc={{ uri: FACEBOOK_ICON }}
+                                onPress={()=>{
                             this.onCancel();
                             setTimeout(() => {
-                                Share.shareSingle(
-                                    Object.assign(shareOptions, {
-                                        social: "facebook"
-                                    })
-                                );
-                            }, 300);
-                        }}
-                    >
-                        Facebook
-                    </Button>
-                    <Button
-                        iconSrc={{ uri: WHATSAPP_ICON }}
-                        onPress={() => {
+                              Share.shareSingle(Object.assign(shareOptions, {
+                                "social": "facebook"
+                              }));
+                            },300);
+                          }}>Facebook</Button>
+                        <Button iconSrc={{ uri: WHATSAPP_ICON }}
+                                onPress={()=>{
                             this.onCancel();
                             setTimeout(() => {
-                                Share.shareSingle(
-                                    Object.assign(shareOptions, {
-                                        social: "whatsapp"
-                                    })
-                                );
-                            }, 300);
-                        }}
-                    >
-                        Whatsapp
-                    </Button>
-                    <Button
-                        iconSrc={{ uri: GOOGLE_PLUS_ICON }}
-                        onPress={() => {
+                              Share.shareSingle(Object.assign(shareOptions, {
+                                "social": "whatsapp"
+                              }));
+                            },300);
+                          }}>Whatsapp</Button>
+                        <Button iconSrc={{ uri: GOOGLE_PLUS_ICON }}
+                                onPress={()=>{
                             this.onCancel();
                             setTimeout(() => {
-                                Share.shareSingle(
-                                    Object.assign(shareOptions, {
-                                        social: "googleplus"
-                                    })
-                                );
-                            }, 300);
-                        }}
-                    >
-                        Google +
-                    </Button>
-                    <Button
-                        iconSrc={{ uri: EMAIL_ICON }}
-                        onPress={() => {
+                              Share.shareSingle(Object.assign(shareOptions, {
+                                "social": "googleplus"
+                              }));
+                            },300);
+                          }}>Google +</Button>
+                        <Button iconSrc={{ uri: EMAIL_ICON }}
+                                onPress={()=>{
                             this.onCancel();
                             setTimeout(() => {
-                                Share.shareSingle(
-                                    Object.assign(shareOptions, {
-                                        social: "email"
-                                    })
-                                );
-                            }, 300);
-                        }}
-                    >
-                        Email
-                    </Button>
-                    <Button
-                        iconSrc={{ uri: PINTEREST_ICON }}
-                        onPress={() => {
+                              Share.shareSingle(Object.assign(shareOptions, {
+                                "social": "email"
+                              }));
+                            },300);
+                          }}>Email</Button>
+                        <Button iconSrc={{ uri: PINTEREST_ICON }}
+                                onPress={()=>{
                             this.onCancel();
                             setTimeout(() => {
-                                Share.shareSingle(
-                                    Object.assign(shareOptions, {
-                                        social: "pinterest"
-                                    })
-                                );
-                            }, 300);
-                        }}
-                    >
-                        Pinterest
-                    </Button>
-                </ShareSheet>
+                              Share.shareSingle(Object.assign(shareOptions, {
+                                "social": "pinterest"
+                              }));
+                            },300);
+                          }}>Pinterest</Button>
+                      </ShareSheet>
             </View>
         );
     }
@@ -152,12 +113,13 @@ export default class ShareButton extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center"
+        alignItems: "center",
+        width: 275
     },
     instructions: {
         flexDirection: "row",
         alignSelf: "flex-end",
-        paddingVertical: 25,
+        paddingVertical: 35,
         paddingBottom: 15
     },
     ShareIcon: {
